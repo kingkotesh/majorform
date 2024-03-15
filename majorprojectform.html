@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <!--Here we are using bootstrap framework for design the form layout.-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+    <script>
+        //Here is the event handler whenever an event triggers.
+        function validateForm() {
+            // Here we are extracting all the data that the user filled in the form.
+            var fullName = document.getElementById("fullName").value.trim();
+            var email = document.getElementById("email").value.trim();
+            var phoneNumber = document.getElementById("phoneNumber").value.trim();
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var errors = [];
+
+            //Checking all the conditions for validating the form.
+            // Name should be minimum of 5 characters length.
+            if (fullName.length < 5) {
+                errors.push("Name must be at least 5 characters long");
+            }
+
+            //Email address should have @ symbol.
+            if (email.indexOf("@") === -1) {
+                errors.push("Enter a valid email address");
+            }
+
+            //Phone Number should not be 123456789 and must be a 10-digit number.
+            if (phoneNumber.length !== 10 || phoneNumber === "123456789") {
+                errors.push("Enter a valid 10-digit phone number");
+            }
+
+            //Password cannot be ‘password’ or ‘name of the user’ or less than 8 characters.
+            if (password.length < 8 || password === "password" || password === fullName) {
+                errors.push("Password must be at least 8 characters long and not 'password'");
+            }
+            //Password and confirm password should match.
+            if (password !== confirmPassword) {
+                errors.push("Passwords do not match");
+            }
+
+            //Whenever any of the above are not met, a pop up is shown to rectify the error.
+            displayErrors(errors);
+
+            // Display alert if no errors
+            if (errors.length === 0) {
+                alert("Submitted Successfully !");
+            }
+
+            return errors.length === 0;
+        }
+
+        function displayErrors(errors) {
+            var errorContainer = document.getElementById("formErrors");
+            errorContainer.innerHTML = ""; // Clear previous errors
+
+            if (errors.length > 0) {
+                errors.forEach(function(error) {
+                    var errorElement = document.createElement("div");
+                    errorElement.textContent = error;
+                    errorContainer.appendChild(errorElement);
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+<!--Here we are creating a registration form with some requiered fields like input for text,email,password,phonenumber and a button.-->
+
+<div class="container mt-5">
+    <h2>Registration Form</h2>
+    <form id="registrationForm" action="" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName">
+        </div>
+        <div class="form-group">
+            <label for="email">Email ID</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+        </div>
+        <div id="formErrors" class="error"></div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
